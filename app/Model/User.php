@@ -47,6 +47,12 @@ function update_user($conn, $data)
 
 function delete_user($conn, $data)
 {
+    // First, update all tasks assigned to this user to have assigned_to = NULL
+    $sql = "UPDATE tasks SET assigned_to = NULL WHERE assigned_to = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute([$data[0]]);  // $data[0] contains the user ID
+
+    // Then delete the user
     $sql = "DELETE FROM users WHERE id=? AND role=?";
     $stmt = $conn->prepare($sql);
     $stmt->execute($data);
@@ -75,7 +81,7 @@ function update_profile($conn, $data)
 
 function count_users($conn)
 {
-    $sql = "SELECT id FROM users WHERE role='member'";
+    $sql = "SELECT id FROM users WHERE role IN ('member', 'teamleader')";
     $stmt = $conn->prepare($sql);
     $stmt->execute([]);
 

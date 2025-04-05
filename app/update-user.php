@@ -37,7 +37,15 @@ if (isset($_SESSION['role']) && isset($_SESSION['id'])) {
 			exit();
 		} else {
 			include "Model/User.php";
-			$password = password_hash($password, PASSWORD_DEFAULT);
+
+			// Only hash password if it's changed (not the default asterisks)
+			if ($password !== "**********") {
+				$password = password_hash($password, PASSWORD_DEFAULT);
+			} else {
+				// Get the current user to keep their existing password
+				$current_user = get_user_by_id($conn, $id);
+				$password = $current_user['password'];
+			}
 
 			$data = array($full_name, $user_name, $password, $role, $id);
 			update_user($conn, $data);

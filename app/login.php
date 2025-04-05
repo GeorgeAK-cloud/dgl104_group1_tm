@@ -34,19 +34,32 @@ if (isset($_POST['user_name']) && isset($_POST['password'])) {
 			$role = $user['role'];
 			$id = $user['id'];
 
+			// Debug logging
+			error_log("Login attempt - Username: $usernameDb, Role: $role");
+
 			if ($user_name === $usernameDb) {
 				if (password_verify($password, $passwordDb)) {
 					// Log the role for debugging
-					error_log("User role: " . $role);
+					error_log("Password verified - User role: " . $role);
 
 					if ($role === "admin" || $role === "member" || $role === "teamleader") {
+						// Clear any existing session data
+						session_unset();
+						session_destroy();
+						session_start();
+
 						$_SESSION['role'] = $role;
 						$_SESSION['id'] = $id;
 						$_SESSION['username'] = $usernameDb;
+
+						// Log successful login
+						error_log("Login successful - Role set to: " . $_SESSION['role']);
+
 						header("Location: ../index.php");
 						exit();
 					} else {
 						$em = "Invalid role: " . $role;
+						error_log("Login failed - Invalid role: " . $role);
 						header("Location: ../login.php?error=$em");
 						exit();
 					}

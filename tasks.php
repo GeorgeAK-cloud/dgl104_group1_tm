@@ -42,24 +42,21 @@ if (isset($_SESSION['role']) && isset($_SESSION['id']) && ($_SESSION['role'] == 
 		<div class="body">
 			<?php include "inc/nav.php" ?>
 			<section class="section-1">
-				<h4 class="title-2">
-					<a href="create_task.php" class="btn">Create Task</a>
-					<div class="task-filters">
-						<a href="tasks.php?filter=all" class="filter-btn <?php echo $filter == 'all' ? 'active' : ''; ?>">
-							<i class="fa fa-list"></i> All Tasks
-						</a>
-						<a href="tasks.php?filter=today" class="filter-btn <?php echo $filter == 'today' ? 'active' : ''; ?>">
-							<i class="fa fa-calendar-check-o"></i> Due Today
-						</a>
-						<a href="tasks.php?filter=overdue" class="filter-btn <?php echo $filter == 'overdue' ? 'active' : ''; ?>">
-							<i class="fa fa-exclamation-circle"></i> Overdue
-						</a>
-						<a href="tasks.php?filter=no_deadline" class="filter-btn <?php echo $filter == 'no_deadline' ? 'active' : ''; ?>">
-							<i class="fa fa-calendar-times-o"></i> No Deadline
-						</a>
-					</div>
-				</h4>
-				<h4 class="title-2"><?= $text ?> (<?= $num_task ?>)</h4>
+				<h4 class="title">All Tasks <a href="create_task.php">Create Task</a></h4>
+				<div class="task-filters">
+					<a href="tasks.php" class="filter-btn <?php echo !isset($_GET['due_date']) ? 'active' : ''; ?>">
+						<i class="fa fa-list"></i> All Tasks
+					</a>
+					<a href="tasks.php?due_date=Due Today" class="filter-btn <?php echo (isset($_GET['due_date']) && $_GET['due_date'] == 'Due Today') ? 'active' : ''; ?>">
+						<i class="fa fa-calendar"></i> Due Today
+					</a>
+					<a href="tasks.php?due_date=Overdue" class="filter-btn <?php echo (isset($_GET['due_date']) && $_GET['due_date'] == 'Overdue') ? 'active' : ''; ?>">
+						<i class="fa fa-calendar-times-o"></i> Overdue
+					</a>
+					<a href="tasks.php?due_date=No Deadline" class="filter-btn <?php echo (isset($_GET['due_date']) && $_GET['due_date'] == 'No Deadline') ? 'active' : ''; ?>">
+						<i class="fa fa-calendar-minus-o"></i> No Deadline
+					</a>
+				</div>
 				<?php if (isset($_GET['success'])) { ?>
 					<div class="success" role="alert">
 						<?php echo stripcslashes($_GET['success']); ?>

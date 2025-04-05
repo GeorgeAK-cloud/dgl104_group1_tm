@@ -63,6 +63,15 @@ if (isset($_SESSION['role']) && isset($_SESSION['id']) && ($_SESSION['role'] == 
 					</div>
 
 					<div class="input-holder">
+						<lable>Status</lable>
+						<select name="status" class="input-1">
+							<option value="pending" <?php if ($task['status'] == "pending") echo "selected"; ?>>Pending</option>
+							<option value="in_progress" <?php if ($task['status'] == "in_progress") echo "selected"; ?>>In Progress</option>
+							<option value="completed" <?php if ($task['status'] == "completed") echo "selected"; ?>>Completed</option>
+						</select><br>
+					</div>
+
+					<div class="input-holder">
 						<lable>Assigned to</lable>
 						<select name="assigned_to" class="input-1">
 							<option value="0">Select employee</option>
@@ -78,10 +87,8 @@ if (isset($_SESSION['role']) && isset($_SESSION['id']) && ($_SESSION['role'] == 
 						</select><br>
 					</div>
 					<input type="text" name="id" value="<?= $task['id'] ?>" hidden>
-
 					<button class="edit-btn">Update</button>
 				</form>
-
 			</section>
 		</div>
 
